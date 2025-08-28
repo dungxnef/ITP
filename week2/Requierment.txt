@@ -1,0 +1,32 @@
+I. Timing report: OptRoute.report_timing.max.rpt (1 2)
+
+1.1 Export bai.txt file with format
+        Startpoint      Endpoint        Scenario    Path Group Slack
+        I_BLENDER_0/R_129 I_BLENDER_0/R_525 func.ss_125c SYS_CLK -0.04
+
+1.2 How many path have setup violation bigger than 10ps? (slack < -0.01)
+
+2.  Export fix.setup.tcl file with format:
+size_cells [get_cells I_BLENDER_0/HFSINV_130_1257] INVX1_ULVT
+size_cells [get_cells I_BLENDER_0/HFSINV_169_2774] INVX2_ULVT
+size_cells [get_cells I_BLENDER_0/HFSINV_193_2677] INVX4_ULVT
+size_cells [get_cells I_BLENDER_0/HFSINV_267_2769] INVX8_ULVT
+...
+
+Hint: 
+	+Get *BUF*/*INV* have refname=*LVT*
+	+Buffer (ref_name: *BUF*) & Inverter (refname: *INV*)
+	+size_cell from LVT to ULVT
+
+
+II. Timing report: OptRoute.report_timing.min.rpt (3)
+3.  Export fix.hold.tcl file with: Insert 1 hold buffer (ref_name: NBUFFX2_HVT) at final pin datapath with format:
+insert_buffer [get_pins I_BLENDER_0/mega_shift_reg[10][27]/RSTB] NBUFFX2_HVT
+insert_buffer [get_pins I_BLENDER_0/mega_shift_reg[10][28]/RSTB] NBUFFX2_HVT
+insert_buffer [get_pins I_BLENDER_0/mega_shift_reg[10][30]/RSTB] NBUFFX2_HVT
+insert_buffer [get_pins I_BLENDER_1/R_309/D] NBUFFX2_HVT
+insert_buffer [get_pins I_BLENDER_1/R_315/D] NBUFFX2_HVT
+insert_buffer [get_pins I_CLOCKING/sys_2x_rst_n_buf_reg/D] NBUFFX2_HVT
+insert_buffer [get_pins I_CLOCKING/sys_clk_in_reg/D] NBUFFX2_HVT
+insert_buffer [get_pins I_CONTEXT_MEM/I_CONTEXT_RAM_1_2/I1[7]] NBUFFX2_HVT
+insert_buffer [get_pins I_CONTEXT_MEM/I_CONTEXT_RAM_1_3/I1[0]] NBUFFX2_HVT

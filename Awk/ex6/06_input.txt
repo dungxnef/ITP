@@ -1,0 +1,36 @@
+Path 1:
+StartP: a/b/c/d/
+e/f/g/h
+EndP: m/n/q/q/
+r/s/t
+Slack: -0.6
+Path 2:
+StartP: t/b/c/d/
+e/f/g/h
+EndP: t/n/q/q/
+r/s/t
+Slack: -0.22
+Path 3:
+StartP: a/b/c/d/k/i/
+e/f/g/h
+EndP: c/r/n/q/q/
+r/s/t
+Slack: -0.12
+Path 4:
+StartP: a/i/c/d/
+e/f/g/h
+EndP: m/y/x/q/
+r/s/t
+Slack: -0.8
+Path 5:
+StartP: a/z/c/d/
+e/f/g/h
+EndP: m/n/q/q/
+r/s/t
+Slack: -0.8
+Path 6:
+StartP: b/b/n/d/
+e/f/g/h
+EndP: x/n/c/q/
+r/s/t
+Slack: -0.8

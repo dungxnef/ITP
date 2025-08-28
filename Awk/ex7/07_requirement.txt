@@ -1,0 +1,22 @@
+
+*** Summary report
+
+     |  Totals  |  reg2reg  |  reg2cgate  |
+===========================================
+WNS  |   -0.8   |   -0.8    |    -0.8     |
+TNS  |   -3.34  |   -2.32   |    -1.02    |
+NVP  |    6     |    4      |     2       |
+===========================================
+
+*** Detail paths:
+
+No |  Group  |          StartPoint           |          EndPoint         |    Slack
+------------------------------------------------------------------------------------
+1  |reg2reg  | a/i/c/d/e/f/g/h               | m/y/x/q/r/s/t             | -0.8
+2  |reg2cgate| a/z/c/d/e/f/g/h               | m/n/q/k/r/s/t             | -0.8
+3  |reg2reg  | b/b/n/d/e/f/g/h               | x/n/c/q/r/s/t             | -0.8
+4  |reg2reg  | a/b/c/d/e/f/g/h               | m/n/q/q/r/s/t             | -0.6
+5  |reg2cgate| t/b/c/d/e/f/g/h               | t/n/q/q/r/s/t             | -0.22
+6  |reg2reg  | a/b/c/d/k/i/e/f/g/h           | c/r/n/q/q/r/s/t           | -0.12
+-------------------------------------------------------------------------------------
+                                                  Total negative slack   | -3.34

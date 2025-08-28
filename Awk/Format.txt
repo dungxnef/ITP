@@ -1,0 +1,53 @@
+Report/Log
+1.
+File: hbi.txt
+line 1  cd pwd    vimdiff
+       <----- $0 ----->
+        $1 $2     $3
+line 2  ll ls  clear
+line 3  print echo
+
+Ex1: 
+less hbi.txt | awk '{print $2}' 
+pwd
+ls 
+echo 
+less hbi.txt | awk 'BEGIN{1} {n} END{1}'
+n = so line trong file
+less hbi.txt | awk 'BEGIN{print "In ra man hinh ki tu thu 2 cua dong"} {print $2} END{}'
+In ra man hinh ki tu thu 2 cua dong
+pwd
+ls
+echo
+2.
+Script: hbi2.csh (hbi2.sh, ..)
+(input1.txt include all names of team)
+./hbi2.csh input1.txt input2.txt
+              $1       $2
+An
+Anh
+...
+
+./hbi2.csh
+#!/bin/csh -f   (Ubuntu #!/bin/bash)
+
+set input1 = $1    # $1 -> input1.txt
+set input2 = $2    # $2 -> input2.txt
+
+
+awk 'BEGIN {\
+} \
+{ \
+} \
+END { \
+}' $input1
+
+
+Note:  while ((getline < "'$input2'") > 0 ) { \
+close("$input2") \
+
+
+
+
+
+

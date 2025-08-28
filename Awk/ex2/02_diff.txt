@@ -1,0 +1,8 @@
+i
+a
+n
+e
+r
+t
+g
+Number of different elements: 7

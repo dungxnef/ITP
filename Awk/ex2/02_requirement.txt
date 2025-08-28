@@ -1,0 +1,30 @@
+# Print out same and different elements when comparing by row or column
++ Write a script 02_ex2.csh
++ When execute 
+./02_ex2.csh 02_input1.txt 02_input2.txt row 1 2  
+=> output are 2 files: 02_same.txt and 02_diff.txt
+or               
+./02_ex2.csh 02_input1.txt 02_input2.txt column 1 3 
+=> output are 2 files: 02_same.txt and 02_diff.txt
+
++ Example:
+
+input1:
+a d g
+b e h
+c f i
+input2:
+c f h
+d w g
+e a k
+
+./02_ex2.csh 02_input1.txt 02_input2.txt row 1 2
+
+02_same.txt:
+d
+g
+Number of same elements: 2
+02_diff.txt:
+a
+w
+Number of different elements: 2

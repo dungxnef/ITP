@@ -1,0 +1,1 @@
+Print to the screen: number of lines/words/characters of a file

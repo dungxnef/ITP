@@ -1,0 +1,5 @@
+../src/router_fifo.sv
+../src/router_fsm.sv
+../src/router_reg.sv
+../src/router_sync.sv
+../src/router_top.sv

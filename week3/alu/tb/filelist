@@ -1,0 +1,4 @@
+../src/alu_arith.sv
+../src/alu_log.sv
+../src/alu_comp.sv
+../src/alu_top.sv

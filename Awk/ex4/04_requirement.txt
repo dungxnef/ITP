@@ -1,0 +1,36 @@
+Input:
+a/b/c
+a/b/e/f/r
+a/b/c/g
+a/b/c/d/e
+a/b/e/v
+a/c
+a/n
+
+Requirement:
+./04_ex4.csh 04_input 1
+Output:
+a 7
+
+./04_ex4.csh 04_input 2
+Output:
+a/b 5
+a/c 1
+a/n 1
+
+./04_ex4.csh 04_input 3
+Output:
+a/b/c 3
+a/b/e 2
+a/c 1
+a/n 1
+
+./04_ex4.csh 04_input 5
+Output:
+a/b/c 1
+a/b/e/f/r 1
+a/b/c/g 1
+a/b/c/d/e 1
+a/b/e/v 1
+a/c 1
+a/n 1

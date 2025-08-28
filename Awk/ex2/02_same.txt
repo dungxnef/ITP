@@ -1,0 +1,2 @@
+b
+Number of same elements: 1

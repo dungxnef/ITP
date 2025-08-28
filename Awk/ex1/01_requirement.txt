@@ -1,0 +1,26 @@
+#Print out the same and different elements
++ Write a script 01_ex1.csh
++ When execute
+    ./01_ex1.csh 01_input1.txt 01_input2.txt 
+    => output are 2 files: 01_same.txt and 01_diff.txt
++ For example:
+
+input1:
+a
+b
+c
+input2:
+c
+d
+e
+
+=>
+same.txt:
+c
+Number of same elements: 1
+diff.txt:
+a
+b
+d
+e
+Number of different elements: 4

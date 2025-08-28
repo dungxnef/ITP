@@ -1,0 +1,12 @@
+u
+v
+x
+b
+p
+d
+e
+t
+5
+8
+56
+Number of different elements: 11

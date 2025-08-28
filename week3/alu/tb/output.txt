@@ -1,0 +1,509 @@
+<> SIMULATING ----------------
++-------+-----------------+------+------+------+---------+---------+------+-------+
+| Test #| Mode            | Op   | OpA  | OpB  | alu_data | Expected| Cout | Match?|
++-------+-----------------+------+------+------+---------+---------+------+-------+
+|1      |Comparison/Shift | LEU  |4b1001| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|2      |Comparison/Shift | SRA  |4b0011| 4b0011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|3      |Comparison/Shift | SLTU |4b1001| 4b0111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|4      |Comparison/Shift | GE   |4b0100| 4b0101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|5      |Arithmetic       | MOD  |4b1110| 4b1111| 4b1110  | 4b1110  | 1b0  | Yes   |
+|6      |Arithmetic       | SUB  |4b1111| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|7      |Arithmetic       | MULT |4b0101| 4b0110| 4b1110  | 4b1110  | 1b0  | No    |
+|8      |Arithmetic       | DIV  |4b0011| 4b1100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|9      |Comparison/Shift | NE   |4b0010| 4b1110| 4b0001  | 4b0001  | 1b1  | No    |
+|10     |Logical          | NOT_A|4b0001| 4b0001| 4b1110  | 4b1110  | 1b0  | Yes   |
+|11     |Comparison/Shift | SLTU |4b1000| 4b1010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|12     |Comparison/Shift | GE   |4b1111| 4b1010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|13     |Comparison/Shift | SRL  |4b1010| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|14     |Logical          | AND  |4b1011| 4b1011| 4b1011  | 4b1011  | 1b1  | No    |
+|15     |Arithmetic       | ADD  |4b0001| 4b0100| 4b0101  | 4b0101  | 1b0  | Yes   |
+|16     |Logical          | NOT_A|4b0000| 4b1000| 4b1111  | 4b1111  | 1b0  | Yes   |
+|17     |Comparison/Shift | SLL  |4b0111| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|18     |Comparison/Shift | LEU  |4b1001| 4b1001| 4b0000  | 4b0001  | 1b0  | No    |
+|19     |Arithmetic       | SUB  |4b0011| 4b0111| 4b1100  | 4b1100  | 1b1  | Yes   |
+|20     |Comparison/Shift | SRA  |4b0010| 4b0011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|21     |Arithmetic       | SUB  |4b0000| 4b1001| 4b0111  | 4b0111  | 1b1  | Yes   |
+|22     |Arithmetic       | MULT |4b0101| 4b1110| 4b0110  | 4b0110  | 1b0  | Yes   |
+|23     |Comparison/Shift | GE   |4b0010| 4b0011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|24     |Logical          | XOR  |4b1011| 4b1100| 4b0111  | 4b0111  | 1b0  | Yes   |
+|25     |Arithmetic       | DIV  |4b0100| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|26     |Comparison/Shift | SRL  |4b1000| 4b1110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|27     |Arithmetic       | MULT |4b0110| 4b1101| 4b1110  | 4b1110  | 1b0  | Yes   |
+|28     |Logical          | OR   |4b0000| 4b1101| 4b1101  | 4b1101  | 1b1  | No    |
+|29     |Comparison/Shift | EQ   |4b0111| 4b1001| 4b0000  | 4b0000  | 1b1  | No    |
+|30     |Arithmetic       | SUB  |4b0111| 4b1001| 4b1110  | 4b1110  | 1b1  | Yes   |
+|31     |Logical          | AND  |4b1100| 4b1101| 4b1100  | 4b1100  | 1b1  | No    |
+|32     |Arithmetic       | SUB  |4b1001| 4b0010| 4b0111  | 4b0111  | 1b0  | Yes   |
+|33     |Logical          | OR   |4b0001| 4b0101| 4b0101  | 4b0101  | 1b1  | No    |
+|34     |Logical          | XOR  |4b0100| 4b1011| 4b1111  | 4b1111  | 1b0  | Yes   |
+|35     |Logical          | OR   |4b1000| 4b0010| 4b1010  | 4b1010  | 1b0  | Yes   |
+|36     |Arithmetic       | MULT |4b1111| 4b0110| 4b1010  | 4b1010  | 1b0  | No    |
+|37     |Arithmetic       | MOD  |4b1111| 4b0111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|38     |Logical          | NAND |4b0000| 4b0101| 4b1111  | 4b1111  | 1b0  | Yes   |
+|39     |Logical          | NOT_B|4b0010| 4b1100| 4b0011  | 4b0011  | 1b0  | Yes   |
+|40     |Logical          | AND  |4b1110| 4b1111| 4b1110  | 4b1110  | 1b1  | No    |
+|41     |Comparison/Shift | SRA  |4b0101| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|42     |Logical          | XOR  |4b0001| 4b1110| 4b1111  | 4b1111  | 1b0  | Yes   |
+|43     |Logical          | XNOR |4b0000| 4b0101| 4b1010  | 4b1010  | 1b0  | Yes   |
+|44     |Logical          | XOR  |4b1011| 4b1101| 4b0110  | 4b0110  | 1b0  | Yes   |
+|45     |Arithmetic       | SUB  |4b0100| 4b1000| 4b1100  | 4b1100  | 1b1  | Yes   |
+|46     |Logical          | AND  |4b1101| 4b1111| 4b1101  | 4b1101  | 1b1  | No    |
+|47     |Arithmetic       | MULT |4b1011| 4b0110| 4b0010  | 4b0010  | 1b0  | Yes   |
+|48     |Arithmetic       | DIV  |4b0110| 4b0110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|49     |Logical          | NAND |4b1100| 4b0011| 4b1111  | 4b1111  | 1b0  | Yes   |
+|50     |Arithmetic       | MULT |4b0001| 4b0111| 4b0111  | 4b0111  | 1b0  | Yes   |
+|51     |Comparison/Shift | SRA  |4b1100| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|52     |Logical          | NOT_A|4b0111| 4b0111| 4b1000  | 4b1000  | 1b0  | Yes   |
+|53     |Arithmetic       | MULT |4b1111| 4b0001| 4b1111  | 4b1111  | 1b0  | Yes   |
+|54     |Comparison/Shift | LT   |4b0000| 4b0001| 4b0001  | 4b0001  | 1b0  | Yes   |
+|55     |Arithmetic       | ADD  |4b1000| 4b1001| 4b0001  | 4b0001  | 1b1  | Yes   |
+|56     |Arithmetic       | SUB  |4b1111| 4b0000| 4b1111  | 4b1111  | 1b0  | Yes   |
+|57     |Arithmetic       | MOD  |4b0011| 4b1101| 4b0011  | 4b0011  | 1b0  | Yes   |
+|58     |Comparison/Shift | SLL  |4b0100| 4b0000| 4b0100  | 4b0100  | 1b0  | Yes   |
+|59     |Arithmetic       | MOD  |4b1010| 4b0111| 4b0011  | 4b0011  | 1b0  | Yes   |
+|60     |Arithmetic       | MOD  |4b1110| 4b1000| 4b0110  | 4b0110  | 1b0  | Yes   |
+|61     |Arithmetic       | MOD  |4b1001| 4b1101| 4b1001  | 4b1001  | 1b0  | Yes   |
+|62     |Arithmetic       | DIV  |4b1111| 4b1000| 4b0001  | 4b0001  | 1b0  | Yes   |
+|63     |Arithmetic       | MULT |4b0001| 4b1011| 4b1011  | 4b1011  | 1b0  | Yes   |
+|64     |Comparison/Shift | SLT  |4b1011| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|65     |Arithmetic       | ADD  |4b1011| 4b0011| 4b1110  | 4b1110  | 1b0  | Yes   |
+|66     |Arithmetic       | ADD  |4b0011| 4b1010| 4b1101  | 4b1101  | 1b0  | Yes   |
+|67     |Logical          | AND  |4b0010| 4b0110| 4b0010  | 4b0010  | 1b0  | Yes   |
+|68     |Arithmetic       | MULT |4b1110| 4b1101| 4b0110  | 4b0110  | 1b0  | No    |
+|69     |Logical          | XOR  |4b1011| 4b1001| 4b0010  | 4b0010  | 1b0  | Yes   |
+|70     |Arithmetic       | MULT |4b0001| 4b0110| 4b0110  | 4b0110  | 1b0  | Yes   |
+|71     |Comparison/Shift | NE   |4b0001| 4b0110| 4b0001  | 4b0001  | 1b1  | No    |
+|72     |Arithmetic       | MULT |4b0100| 4b1101| 4b0100  | 4b0100  | 1b0  | No    |
+|73     |Logical          | NOT_B|4b0001| 4b0000| 4b1111  | 4b1111  | 1b0  | Yes   |
+|74     |Logical          | NOT_B|4b1010| 4b1101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|75     |Logical          | OR   |4b0011| 4b0010| 4b0011  | 4b0011  | 1b0  | Yes   |
+|76     |Arithmetic       | ADD  |4b0000| 4b1011| 4b1011  | 4b1011  | 1b0  | Yes   |
+|77     |Logical          | NOR  |4b0101| 4b1000| 4b0010  | 4b0010  | 1b0  | Yes   |
+|78     |Arithmetic       | ADD  |4b1110| 4b0110| 4b0100  | 4b0100  | 1b1  | Yes   |
+|79     |Comparison/Shift | NE   |4b1100| 4b1011| 4b0001  | 4b0001  | 1b0  | Yes   |
+|80     |Comparison/Shift | EQ   |4b1001| 4b1001| 4b0001  | 4b0001  | 1b1  | No    |
+|81     |Logical          | NOT_A|4b1001| 4b1101| 4b0110  | 4b0110  | 1b0  | Yes   |
+|82     |Logical          | NAND |4b1010| 4b0001| 4b1111  | 4b1111  | 1b0  | Yes   |
+|83     |Comparison/Shift | LEU  |4b0011| 4b1101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|84     |Arithmetic       | MULT |4b1000| 4b0110| 4b0000  | 4b0000  | 1b0  | No    |
+|85     |Comparison/Shift | EQ   |4b1110| 4b0011| 4b0000  | 4b0000  | 1b1  | No    |
+|86     |Comparison/Shift | EQ   |4b1001| 4b1101| 4b0000  | 4b0000  | 1b1  | No    |
+|87     |Logical          | OR   |4b1000| 4b1010| 4b1010  | 4b1010  | 1b1  | No    |
+|88     |Arithmetic       | MULT |4b0011| 4b0100| 4b1100  | 4b1100  | 1b0  | Yes   |
+|89     |Comparison/Shift | SLL  |4b0001| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|90     |Arithmetic       | MOD  |4b1011| 4b1111| 4b1011  | 4b1011  | 1b0  | Yes   |
+|91     |Arithmetic       | DIV  |4b1100| 4b0110| 4b0010  | 4b0010  | 1b0  | Yes   |
+|92     |Arithmetic       | DIV  |4b1100| 4b0000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|93     |Logical          | NAND |4b0100| 4b0110| 4b1011  | 4b1011  | 1b0  | Yes   |
+|94     |Comparison/Shift | SRA  |4b0011| 4b0101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|95     |Comparison/Shift | SLTU |4b1111| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|96     |Logical          | NOR  |4b1101| 4b1001| 4b0010  | 4b0010  | 1b0  | Yes   |
+|97     |Arithmetic       | ADD  |4b0011| 4b1101| 4b0000  | 4b0000  | 1b1  | Yes   |
+|98     |Comparison/Shift | EQ   |4b1101| 4b0010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|99     |Logical          | NAND |4b1001| 4b1110| 4b0111  | 4b0111  | 1b0  | Yes   |
+|100    |Logical          | NOT_A|4b1111| 4b0001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|101    |Arithmetic       | MULT |4b0111| 4b1000| 4b1000  | 4b1000  | 1b0  | No    |
+|102    |Arithmetic       | ADD  |4b1101| 4b0011| 4b0000  | 4b0000  | 1b1  | Yes   |
+|103    |Arithmetic       | MULT |4b1100| 4b0100| 4b0000  | 4b0000  | 1b0  | No    |
+|104    |Logical          | AND  |4b1101| 4b1100| 4b1100  | 4b1100  | 1b1  | No    |
+|105    |Comparison/Shift | SRL  |4b1010| 4b0001| 4b0101  | 4b0101  | 1b0  | Yes   |
+|106    |Comparison/Shift | LT   |4b0100| 4b1011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|107    |Logical          | AND  |4b1001| 4b1111| 4b1001  | 4b1001  | 1b1  | No    |
+|108    |Comparison/Shift | SRL  |4b0000| 4b0011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|109    |Logical          | OR   |4b1011| 4b1100| 4b1111  | 4b1111  | 1b1  | No    |
+|110    |Logical          | NOT_A|4b1111| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|111    |Logical          | NOT_A|4b1110| 4b0100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|112    |Comparison/Shift | EQ   |4b0000| 4b1100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|113    |Comparison/Shift | SLL  |4b1101| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|114    |Logical          | XNOR |4b0101| 4b0010| 4b1000  | 4b1000  | 1b0  | Yes   |
+|115    |Logical          | OR   |4b0001| 4b0001| 4b0001  | 4b0001  | 1b0  | Yes   |
+|116    |Logical          | XNOR |4b0100| 4b0011| 4b1000  | 4b1000  | 1b0  | Yes   |
+|117    |Logical          | NOR  |4b1111| 4b1011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|118    |Comparison/Shift | SLTU |4b0100| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|119    |Logical          | XOR  |4b0010| 4b1110| 4b1100  | 4b1100  | 1b0  | Yes   |
+|120    |Logical          | AND  |4b1010| 4b1010| 4b1010  | 4b1010  | 1b1  | No    |
+|121    |Arithmetic       | MULT |4b0100| 4b1110| 4b1000  | 4b1000  | 1b0  | No    |
+|122    |Arithmetic       | DIV  |4b0000| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|123    |Arithmetic       | ADD  |4b1001| 4b0000| 4b1001  | 4b1001  | 1b0  | Yes   |
+|124    |Comparison/Shift | GEU  |4b0011| 4b1011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|125    |Logical          | XOR  |4b0110| 4b0101| 4b0011  | 4b0011  | 1b0  | Yes   |
+|126    |Arithmetic       | SUB  |4b0011| 4b1011| 4b1000  | 4b1000  | 1b1  | Yes   |
+|127    |Logical          | NOT_B|4b1001| 4b1011| 4b0100  | 4b0100  | 1b0  | Yes   |
+|128    |Logical          | OR   |4b0101| 4b0100| 4b0101  | 4b0101  | 1b0  | Yes   |
+|129    |Comparison/Shift | GEU  |4b0011| 4b0101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|130    |Comparison/Shift | GE   |4b1101| 4b1100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|131    |Logical          | AND  |4b1101| 4b0111| 4b0101  | 4b0101  | 1b1  | No    |
+|132    |Logical          | AND  |4b0010| 4b0000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|133    |Arithmetic       | MULT |4b0101| 4b0100| 4b0100  | 4b0100  | 1b0  | No    |
+|134    |Arithmetic       | SUB  |4b1111| 4b0000| 4b1111  | 4b1111  | 1b0  | Yes   |
+|135    |Comparison/Shift | LT   |4b1011| 4b0100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|136    |Logical          | NOT_B|4b1001| 4b1000| 4b0111  | 4b0111  | 1b0  | Yes   |
+|137    |Arithmetic       | SUB  |4b1110| 4b1101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|138    |Arithmetic       | MOD  |4b1001| 4b0100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|139    |Comparison/Shift | LT   |4b1100| 4b0101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|140    |Comparison/Shift | LEU  |4b0101| 4b1010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|141    |Comparison/Shift | SRL  |4b1110| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|142    |Comparison/Shift | GE   |4b1010| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|143    |Arithmetic       | MULT |4b0100| 4b0010| 4b1000  | 4b1000  | 1b0  | Yes   |
+|144    |Arithmetic       | ADD  |4b1010| 4b1110| 4b1000  | 4b1000  | 1b1  | Yes   |
+|145    |Logical          | NAND |4b1011| 4b1000| 4b0111  | 4b0111  | 1b0  | Yes   |
+|146    |Comparison/Shift | GEU  |4b1101| 4b0110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|147    |Logical          | OR   |4b1011| 4b0010| 4b1011  | 4b1011  | 1b0  | Yes   |
+|148    |Comparison/Shift | NE   |4b1100| 4b1110| 4b0001  | 4b0001  | 1b1  | No    |
+|149    |Arithmetic       | SUB  |4b1000| 4b1110| 4b1010  | 4b1010  | 1b1  | Yes   |
+|150    |Arithmetic       | SUB  |4b1101| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|151    |Comparison/Shift | SRL  |4b1111| 4b1100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|152    |Logical          | NOR  |4b1011| 4b0111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|153    |Logical          | NAND |4b0000| 4b0110| 4b1111  | 4b1111  | 1b0  | Yes   |
+|154    |Comparison/Shift | GEU  |4b1100| 4b0111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|155    |Comparison/Shift | GE   |4b1001| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|156    |Arithmetic       | ADD  |4b1100| 4b0100| 4b0000  | 4b0000  | 1b1  | Yes   |
+|157    |Arithmetic       | ADD  |4b0010| 4b1000| 4b1010  | 4b1010  | 1b0  | Yes   |
+|158    |Arithmetic       | DIV  |4b0101| 4b1110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|159    |Arithmetic       | SUB  |4b1011| 4b1111| 4b1100  | 4b1100  | 1b1  | Yes   |
+|160    |Logical          | XNOR |4b0111| 4b1111| 4b0111  | 4b0111  | 1b0  | Yes   |
+|161    |Logical          | OR   |4b0101| 4b1000| 4b1101  | 4b1101  | 1b1  | No    |
+|162    |Arithmetic       | DIV  |4b1111| 4b1010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|163    |Logical          | NOT_A|4b0111| 4b0001| 4b1000  | 4b1000  | 1b0  | Yes   |
+|164    |Arithmetic       | MOD  |4b0101| 4b1111| 4b0101  | 4b0101  | 1b0  | Yes   |
+|165    |Logical          | NOT_B|4b0111| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|166    |Comparison/Shift | SRL  |4b1101| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|167    |Arithmetic       | MOD  |4b0111| 4b1101| 4b0111  | 4b0111  | 1b0  | Yes   |
+|168    |Logical          | XOR  |4b1101| 4b1011| 4b0110  | 4b0110  | 1b0  | Yes   |
+|169    |Comparison/Shift | SRA  |4b0011| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|170    |Arithmetic       | SUB  |4b0011| 4b1101| 4b0110  | 4b0110  | 1b1  | Yes   |
+|171    |Logical          | NOT_B|4b1110| 4b1001| 4b0110  | 4b0110  | 1b0  | Yes   |
+|172    |Logical          | XNOR |4b1000| 4b0110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|173    |Arithmetic       | MULT |4b0101| 4b0010| 4b1010  | 4b1010  | 1b0  | Yes   |
+|174    |Comparison/Shift | LEU  |4b1010| 4b1011| 4b0001  | 4b0001  | 1b0  | Yes   |
+|175    |Comparison/Shift | EQ   |4b1000| 4b1010| 4b0000  | 4b0000  | 1b1  | No    |
+|176    |Arithmetic       | MULT |4b0101| 4b0110| 4b1110  | 4b1110  | 1b0  | No    |
+|177    |Logical          | NOT_A|4b1111| 4b1100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|178    |Comparison/Shift | SLTU |4b1001| 4b0100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|179    |Arithmetic       | SUB  |4b1101| 4b1100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|180    |Arithmetic       | MULT |4b0011| 4b0111| 4b0101  | 4b0101  | 1b0  | No    |
+|181    |Arithmetic       | SUB  |4b1001| 4b1111| 4b1010  | 4b1010  | 1b1  | Yes   |
+|182    |Comparison/Shift | LT   |4b1010| 4b0111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|183    |Logical          | NOR  |4b0001| 4b0110| 4b1000  | 4b1000  | 1b0  | Yes   |
+|184    |Comparison/Shift | NE   |4b1100| 4b0000| 4b0001  | 4b0001  | 1b0  | Yes   |
+|185    |Logical          | NAND |4b1100| 4b1000| 4b0111  | 4b0111  | 1b0  | Yes   |
+|186    |Logical          | XOR  |4b1100| 4b1101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|187    |Comparison/Shift | GE   |4b1001| 4b1000| 4b0001  | 4b0001  | 1b0  | Yes   |
+|188    |Arithmetic       | MOD  |4b1111| 4b0100| 4b0011  | 4b0011  | 1b0  | Yes   |
+|189    |Comparison/Shift | NE   |4b0011| 4b0000| 4b0001  | 4b0001  | 1b0  | Yes   |
+|190    |Comparison/Shift | SLTU |4b0111| 4b0011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|191    |Arithmetic       | MOD  |4b1001| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|192    |Comparison/Shift | EQ   |4b1010| 4b1100| 4b0000  | 4b0000  | 1b1  | No    |
+|193    |Logical          | OR   |4b0100| 4b0001| 4b0101  | 4b0101  | 1b0  | Yes   |
+|194    |Arithmetic       | MULT |4b1110| 4b1001| 4b1110  | 4b1110  | 1b0  | No    |
+|195    |Arithmetic       | MULT |4b0001| 4b1010| 4b1010  | 4b1010  | 1b0  | Yes   |
+|196    |Comparison/Shift | SRL  |4b1110| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|197    |Logical          | OR   |4b1001| 4b0111| 4b1111  | 4b1111  | 1b0  | Yes   |
+|198    |Arithmetic       | DIV  |4b1010| 4b0001| 4b1010  | 4b1010  | 1b0  | Yes   |
+|199    |Arithmetic       | DIV  |4b1010| 4b1000| 4b0001  | 4b0001  | 1b0  | Yes   |
+|200    |Comparison/Shift | SLTU |4b0100| 4b1011| 4b0001  | 4b0001  | 1b0  | Yes   |
+|201    |Logical          | XOR  |4b1100| 4b0111| 4b1011  | 4b1011  | 1b0  | Yes   |
+|202    |Logical          | OR   |4b0000| 4b0101| 4b0101  | 4b0101  | 1b1  | No    |
+|203    |Logical          | NOR  |4b1111| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|204    |Arithmetic       | SUB  |4b1111| 4b1100| 4b0011  | 4b0011  | 1b0  | Yes   |
+|205    |Comparison/Shift | SRL  |4b0011| 4b0000| 4b0011  | 4b0011  | 1b0  | Yes   |
+|206    |Logical          | NOT_A|4b0001| 4b0011| 4b1110  | 4b1110  | 1b0  | Yes   |
+|207    |Logical          | XNOR |4b1011| 4b1010| 4b1110  | 4b1110  | 1b0  | Yes   |
+|208    |Comparison/Shift | LEU  |4b0110| 4b1011| 4b0001  | 4b0001  | 1b0  | Yes   |
+|209    |Arithmetic       | SUB  |4b0010| 4b0010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|210    |Comparison/Shift | GE   |4b0111| 4b1111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|211    |Arithmetic       | SUB  |4b0101| 4b0110| 4b1111  | 4b1111  | 1b1  | Yes   |
+|212    |Arithmetic       | MOD  |4b0010| 4b0101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|213    |Logical          | NOR  |4b0101| 4b0110| 4b1000  | 4b1000  | 1b0  | Yes   |
+|214    |Logical          | NOT_B|4b1001| 4b0100| 4b1011  | 4b1011  | 1b0  | Yes   |
+|215    |Arithmetic       | DIV  |4b1111| 4b0001| 4b1111  | 4b1111  | 1b0  | Yes   |
+|216    |Logical          | NOR  |4b1100| 4b1100| 4b0011  | 4b0011  | 1b0  | Yes   |
+|217    |Arithmetic       | SUB  |4b1110| 4b0100| 4b1010  | 4b1010  | 1b0  | Yes   |
+|218    |Logical          | AND  |4b0011| 4b0100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|219    |Logical          | NOT_B|4b1010| 4b0010| 4b1101  | 4b1101  | 1b0  | Yes   |
+|220    |Arithmetic       | DIV  |4b0111| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|221    |Arithmetic       | DIV  |4b1111| 4b0110| 4b0010  | 4b0010  | 1b0  | Yes   |
+|222    |Arithmetic       | ADD  |4b1010| 4b0011| 4b1101  | 4b1101  | 1b0  | Yes   |
+|223    |Arithmetic       | MULT |4b0101| 4b1111| 4b1011  | 4b1011  | 1b0  | Yes   |
+|224    |Comparison/Shift | GE   |4b1011| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|225    |Arithmetic       | SUB  |4b1010| 4b0000| 4b1010  | 4b1010  | 1b0  | Yes   |
+|226    |Logical          | NOR  |4b0100| 4b1101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|227    |Comparison/Shift | SRA  |4b1111| 4b0011| 4b0001  | 4b0001  | 1b0  | Yes   |
+|228    |Logical          | NOT_A|4b1100| 4b1101| 4b0011  | 4b0011  | 1b0  | Yes   |
+|229    |Arithmetic       | DIV  |4b0011| 4b0100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|230    |Logical          | NOT_B|4b0111| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|231    |Arithmetic       | DIV  |4b1110| 4b0110| 4b0010  | 4b0010  | 1b0  | Yes   |
+|232    |Arithmetic       | MOD  |4b1100| 4b1110| 4b1100  | 4b1100  | 1b0  | Yes   |
+|233    |Comparison/Shift | SRA  |4b1110| 4b0100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|234    |Arithmetic       | ADD  |4b0001| 4b1011| 4b1100  | 4b1100  | 1b0  | Yes   |
+|235    |Logical          | XOR  |4b1110| 4b1100| 4b0010  | 4b0010  | 1b0  | Yes   |
+|236    |Comparison/Shift | SLT  |4b1010| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|237    |Comparison/Shift | EQ   |4b1100| 4b1000| 4b0000  | 4b0000  | 1b1  | No    |
+|238    |Comparison/Shift | SRA  |4b0111| 4b0011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|239    |Logical          | NAND |4b1001| 4b1110| 4b0111  | 4b0111  | 1b0  | Yes   |
+|240    |Arithmetic       | ADD  |4b1100| 4b0011| 4b1111  | 4b1111  | 1b0  | Yes   |
+|241    |Logical          | AND  |4b0111| 4b0000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|242    |Comparison/Shift | LEU  |4b1011| 4b1111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|243    |Comparison/Shift | LT   |4b1011| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|244    |Logical          | XOR  |4b0110| 4b1000| 4b1110  | 4b1110  | 1b0  | Yes   |
+|245    |Comparison/Shift | SLTU |4b0000| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|246    |Arithmetic       | DIV  |4b0001| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|247    |Arithmetic       | DIV  |4b0100| 4b1100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|248    |Comparison/Shift | LT   |4b1111| 4b1011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|249    |Arithmetic       | MOD  |4b1011| 4b1000| 4b0011  | 4b0011  | 1b0  | Yes   |
+|250    |Arithmetic       | MULT |4b0111| 4b1000| 4b1000  | 4b1000  | 1b0  | No    |
+|251    |Comparison/Shift | SLTU |4b0110| 4b0010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|252    |Arithmetic       | MULT |4b1010| 4b1011| 4b1110  | 4b1110  | 1b0  | Yes   |
+|253    |Logical          | NOT_A|4b1001| 4b0101| 4b0110  | 4b0110  | 1b0  | Yes   |
+|254    |Logical          | XNOR |4b1011| 4b1101| 4b1001  | 4b1001  | 1b0  | Yes   |
+|255    |Arithmetic       | DIV  |4b1001| 4b0101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|256    |Comparison/Shift | SLL  |4b0000| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|257    |Comparison/Shift | GEU  |4b0010| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|258    |Arithmetic       | MULT |4b0111| 4b0000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|259    |Logical          | NOT_B|4b0010| 4b0011| 4b1100  | 4b1100  | 1b0  | Yes   |
+|260    |Comparison/Shift | NE   |4b1110| 4b1010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|261    |Comparison/Shift | LEU  |4b0000| 4b0111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|262    |Arithmetic       | SUB  |4b0100| 4b1000| 4b1100  | 4b1100  | 1b1  | Yes   |
+|263    |Comparison/Shift | EQ   |4b1101| 4b1010| 4b0000  | 4b0000  | 1b1  | No    |
+|264    |Logical          | NOR  |4b0100| 4b0111| 4b1000  | 4b1000  | 1b0  | Yes   |
+|265    |Arithmetic       | SUB  |4b0110| 4b1001| 4b1101  | 4b1101  | 1b1  | Yes   |
+|266    |Arithmetic       | MULT |4b1001| 4b1011| 4b0011  | 4b0011  | 1b0  | Yes   |
+|267    |Arithmetic       | MOD  |4b1110| 4b0111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|268    |Logical          | OR   |4b0001| 4b1101| 4b1101  | 4b1101  | 1b1  | No    |
+|269    |Arithmetic       | ADD  |4b0100| 4b1000| 4b1100  | 4b1100  | 1b0  | Yes   |
+|270    |Arithmetic       | MOD  |4b0000| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|271    |Arithmetic       | DIV  |4b0010| 4b1110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|272    |Arithmetic       | MOD  |4b0101| 4b0100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|273    |Arithmetic       | ADD  |4b1101| 4b1101| 4b1010  | 4b1010  | 1b1  | Yes   |
+|274    |Logical          | NOR  |4b1000| 4b0101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|275    |Arithmetic       | MULT |4b1100| 4b1010| 4b1000  | 4b1000  | 1b0  | No    |
+|276    |Logical          | NOT_B|4b0111| 4b1000| 4b0111  | 4b0111  | 1b0  | Yes   |
+|277    |Comparison/Shift | LEU  |4b0000| 4b1100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|278    |Comparison/Shift | LEU  |4b0100| 4b1100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|279    |Comparison/Shift | GEU  |4b1010| 4b1010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|280    |Logical          | NOT_B|4b1110| 4b1011| 4b0100  | 4b0100  | 1b0  | Yes   |
+|281    |Comparison/Shift | GEU  |4b1000| 4b0100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|282    |Arithmetic       | DIV  |4b1001| 4b0101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|283    |Logical          | XNOR |4b1111| 4b1010| 4b1010  | 4b1010  | 1b0  | Yes   |
+|284    |Logical          | NOT_A|4b0011| 4b0011| 4b1100  | 4b1100  | 1b0  | Yes   |
+|285    |Logical          | NOT_B|4b0000| 4b1000| 4b0111  | 4b0111  | 1b0  | Yes   |
+|286    |Logical          | NOR  |4b0100| 4b0011| 4b1000  | 4b1000  | 1b0  | Yes   |
+|287    |Comparison/Shift | LT   |4b1110| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|288    |Logical          | NAND |4b0101| 4b0111| 4b1010  | 4b1010  | 1b0  | Yes   |
+|289    |Arithmetic       | MULT |4b1011| 4b1011| 4b1001  | 4b1001  | 1b0  | No    |
+|290    |Logical          | AND  |4b0001| 4b0101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|291    |Logical          | XOR  |4b1111| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|292    |Logical          | XOR  |4b0010| 4b1010| 4b1000  | 4b1000  | 1b0  | Yes   |
+|293    |Arithmetic       | DIV  |4b0010| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|294    |Logical          | NOT_B|4b1110| 4b0010| 4b1101  | 4b1101  | 1b0  | Yes   |
+|295    |Arithmetic       | MULT |4b1100| 4b0001| 4b1100  | 4b1100  | 1b0  | Yes   |
+|296    |Logical          | NOT_B|4b1001| 4b0001| 4b1110  | 4b1110  | 1b0  | Yes   |
+|297    |Arithmetic       | MULT |4b1100| 4b1100| 4b0000  | 4b0000  | 1b0  | No    |
+|298    |Arithmetic       | SUB  |4b0001| 4b0100| 4b1101  | 4b1101  | 1b1  | Yes   |
+|299    |Logical          | NOR  |4b0011| 4b0101| 4b1000  | 4b1000  | 1b0  | Yes   |
+|300    |Arithmetic       | MOD  |4b0000| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|301    |Comparison/Shift | GEU  |4b0100| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|302    |Logical          | NOR  |4b0010| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|303    |Logical          | AND  |4b1111| 4b0110| 4b0110  | 4b0110  | 1b1  | No    |
+|304    |Arithmetic       | SUB  |4b0111| 4b1101| 4b1010  | 4b1010  | 1b1  | Yes   |
+|305    |Arithmetic       | DIV  |4b1010| 4b0110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|306    |Logical          | NOR  |4b1010| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|307    |Arithmetic       | SUB  |4b0101| 4b0000| 4b0101  | 4b0101  | 1b0  | Yes   |
+|308    |Arithmetic       | SUB  |4b1001| 4b1100| 4b1101  | 4b1101  | 1b1  | Yes   |
+|309    |Comparison/Shift | GE   |4b1100| 4b0000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|310    |Logical          | NAND |4b1110| 4b1101| 4b0011  | 4b0011  | 1b0  | Yes   |
+|311    |Arithmetic       | MOD  |4b0100| 4b1011| 4b0100  | 4b0100  | 1b0  | Yes   |
+|312    |Comparison/Shift | LT   |4b1000| 4b0001| 4b0001  | 4b0001  | 1b0  | Yes   |
+|313    |Comparison/Shift | SLTU |4b0111| 4b0001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|314    |Logical          | NAND |4b0000| 4b1010| 4b1111  | 4b1111  | 1b0  | Yes   |
+|315    |Arithmetic       | ADD  |4b1010| 4b0100| 4b1110  | 4b1110  | 1b0  | Yes   |
+|316    |Comparison/Shift | LEU  |4b0000| 4b0010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|317    |Comparison/Shift | SLT  |4b0010| 4b0001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|318    |Arithmetic       | SUB  |4b1110| 4b0110| 4b1000  | 4b1000  | 1b0  | Yes   |
+|319    |Arithmetic       | ADD  |4b0001| 4b0010| 4b0011  | 4b0011  | 1b0  | Yes   |
+|320    |Logical          | NOT_A|4b0100| 4b1101| 4b1011  | 4b1011  | 1b0  | Yes   |
+|321    |Arithmetic       | DIV  |4b1110| 4b1010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|322    |Logical          | XNOR |4b0101| 4b1101| 4b0111  | 4b0111  | 1b0  | Yes   |
+|323    |Comparison/Shift | GEU  |4b0001| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|324    |Comparison/Shift | SRL  |4b0001| 4b0101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|325    |Arithmetic       | ADD  |4b0110| 4b1001| 4b1111  | 4b1111  | 1b0  | Yes   |
+|326    |Arithmetic       | MOD  |4b1111| 4b0001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|327    |Arithmetic       | ADD  |4b0100| 4b0101| 4b1001  | 4b1001  | 1b0  | Yes   |
+|328    |Arithmetic       | MULT |4b0010| 4b0111| 4b1110  | 4b1110  | 1b0  | Yes   |
+|329    |Logical          | XNOR |4b0010| 4b0001| 4b1100  | 4b1100  | 1b0  | Yes   |
+|330    |Logical          | AND  |4b1110| 4b0100| 4b0100  | 4b0100  | 1b1  | No    |
+|331    |Arithmetic       | SUB  |4b0011| 4b1010| 4b1001  | 4b1001  | 1b1  | Yes   |
+|332    |Comparison/Shift | SRL  |4b1111| 4b0000| 4b1111  | 4b1111  | 1b0  | Yes   |
+|333    |Arithmetic       | ADD  |4b1001| 4b1100| 4b0101  | 4b0101  | 1b1  | Yes   |
+|334    |Logical          | OR   |4b1101| 4b0000| 4b1101  | 4b1101  | 1b0  | Yes   |
+|335    |Logical          | AND  |4b0101| 4b0101| 4b0101  | 4b0101  | 1b0  | Yes   |
+|336    |Logical          | NOR  |4b1100| 4b1101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|337    |Arithmetic       | SUB  |4b1110| 4b1001| 4b0101  | 4b0101  | 1b0  | Yes   |
+|338    |Logical          | OR   |4b1101| 4b1100| 4b1101  | 4b1101  | 1b0  | Yes   |
+|339    |Comparison/Shift | GE   |4b0110| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|340    |Arithmetic       | DIV  |4b1111| 4b1101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|341    |Arithmetic       | ADD  |4b1001| 4b0011| 4b1100  | 4b1100  | 1b0  | Yes   |
+|342    |Arithmetic       | MULT |4b0100| 4b1011| 4b1100  | 4b1100  | 1b0  | Yes   |
+|343    |Comparison/Shift | GEU  |4b0000| 4b0010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|344    |Logical          | NAND |4b1111| 4b1010| 4b0101  | 4b0101  | 1b0  | Yes   |
+|345    |Arithmetic       | DIV  |4b0011| 4b0001| 4b0011  | 4b0011  | 1b0  | Yes   |
+|346    |Logical          | NOT_A|4b1101| 4b0110| 4b0010  | 4b0010  | 1b0  | Yes   |
+|347    |Logical          | NOT_A|4b0100| 4b0111| 4b1011  | 4b1011  | 1b0  | Yes   |
+|348    |Comparison/Shift | SLL  |4b0101| 4b0010| 4b0100  | 4b0100  | 1b0  | Yes   |
+|349    |Comparison/Shift | LT   |4b0101| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|350    |Arithmetic       | MOD  |4b1001| 4b1110| 4b1001  | 4b1001  | 1b0  | Yes   |
+|351    |Arithmetic       | SUB  |4b0000| 4b0100| 4b1100  | 4b1100  | 1b1  | Yes   |
+|352    |Logical          | XOR  |4b1111| 4b0010| 4b1101  | 4b1101  | 1b0  | Yes   |
+|353    |Arithmetic       | MOD  |4b0011| 4b0101| 4b0011  | 4b0011  | 1b0  | Yes   |
+|354    |Logical          | AND  |4b1011| 4b0101| 4b0001  | 4b0001  | 1b1  | No    |
+|355    |Comparison/Shift | SLL  |4b1101| 4b1011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|356    |Arithmetic       | MOD  |4b1101| 4b1111| 4b1101  | 4b1101  | 1b0  | Yes   |
+|357    |Comparison/Shift | SLTU |4b1101| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|358    |Arithmetic       | DIV  |4b0100| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|359    |Comparison/Shift | SLL  |4b0011| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|360    |Comparison/Shift | SRA  |4b1000| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|361    |Arithmetic       | MOD  |4b0100| 4b1000| 4b0100  | 4b0100  | 1b0  | Yes   |
+|362    |Arithmetic       | ADD  |4b1110| 4b1110| 4b1100  | 4b1100  | 1b1  | Yes   |
+|363    |Logical          | NOR  |4b1001| 4b0011| 4b0100  | 4b0100  | 1b0  | Yes   |
+|364    |Comparison/Shift | LT   |4b0011| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|365    |Arithmetic       | MULT |4b0011| 4b0100| 4b1100  | 4b1100  | 1b0  | Yes   |
+|366    |Arithmetic       | SUB  |4b0011| 4b0101| 4b1110  | 4b1110  | 1b1  | Yes   |
+|367    |Comparison/Shift | SRA  |4b1011| 4b1110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|368    |Comparison/Shift | GEU  |4b1101| 4b1110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|369    |Arithmetic       | DIV  |4b0111| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|370    |Arithmetic       | MOD  |4b0111| 4b0010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|371    |Logical          | AND  |4b0101| 4b1101| 4b0101  | 4b0101  | 1b1  | No    |
+|372    |Logical          | NOR  |4b1010| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|373    |Comparison/Shift | SLTU |4b0011| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|374    |Arithmetic       | MOD  |4b0100| 4b0001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|375    |Logical          | NAND |4b1111| 4b0111| 4b1000  | 4b1000  | 1b0  | Yes   |
+|376    |Comparison/Shift | GE   |4b0110| 4b0001| 4b0001  | 4b0001  | 1b0  | Yes   |
+|377    |Comparison/Shift | SRA  |4b1011| 4b0001| 4b0101  | 4b0101  | 1b0  | Yes   |
+|378    |Logical          | AND  |4b0011| 4b0010| 4b0010  | 4b0010  | 1b0  | Yes   |
+|379    |Logical          | OR   |4b1111| 4b1001| 4b1111  | 4b1111  | 1b0  | Yes   |
+|380    |Comparison/Shift | SRA  |4b1000| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|381    |Logical          | NOT_B|4b1000| 4b1101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|382    |Logical          | NAND |4b1110| 4b0001| 4b1111  | 4b1111  | 1b0  | Yes   |
+|383    |Logical          | NOR  |4b1000| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|384    |Logical          | NOT_A|4b0000| 4b1001| 4b1111  | 4b1111  | 1b0  | Yes   |
+|385    |Comparison/Shift | SRA  |4b1010| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|386    |Comparison/Shift | SLT  |4b1111| 4b0000| 4b0001  | 4b0001  | 1b0  | Yes   |
+|387    |Logical          | XOR  |4b1010| 4b0111| 4b1101  | 4b1101  | 1b0  | Yes   |
+|388    |Comparison/Shift | EQ   |4b0000| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|389    |Comparison/Shift | SLT  |4b1100| 4b0001| 4b0001  | 4b0001  | 1b0  | Yes   |
+|390    |Comparison/Shift | GEU  |4b0010| 4b0000| 4b0001  | 4b0001  | 1b0  | Yes   |
+|391    |Logical          | NOR  |4b1110| 4b0010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|392    |Logical          | NOR  |4b1100| 4b0101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|393    |Comparison/Shift | LT   |4b0010| 4b0111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|394    |Comparison/Shift | SRA  |4b0111| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|395    |Comparison/Shift | SRA  |4b0001| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|396    |Logical          | NOT_B|4b1000| 4b0010| 4b1101  | 4b1101  | 1b0  | Yes   |
+|397    |Comparison/Shift | LEU  |4b0100| 4b1110| 4b0001  | 4b0001  | 1b0  | Yes   |
+|398    |Arithmetic       | ADD  |4b1110| 4b0111| 4b0101  | 4b0101  | 1b1  | Yes   |
+|399    |Arithmetic       | DIV  |4b1001| 4b1011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|400    |Logical          | XOR  |4b0000| 4b0101| 4b0101  | 4b0101  | 1b0  | Yes   |
+|401    |Comparison/Shift | LT   |4b1100| 4b0000| 4b0001  | 4b0001  | 1b0  | Yes   |
+|402    |Logical          | NOT_A|4b1010| 4b0101| 4b0101  | 4b0101  | 1b0  | Yes   |
+|403    |Arithmetic       | ADD  |4b1101| 4b1001| 4b0110  | 4b0110  | 1b1  | Yes   |
+|404    |Comparison/Shift | LEU  |4b1011| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|405    |Logical          | NOT_A|4b0101| 4b1001| 4b1010  | 4b1010  | 1b0  | Yes   |
+|406    |Logical          | OR   |4b0000| 4b0111| 4b0111  | 4b0111  | 1b1  | No    |
+|407    |Comparison/Shift | SLTU |4b0010| 4b1100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|408    |Arithmetic       | MULT |4b0001| 4b1011| 4b1011  | 4b1011  | 1b0  | Yes   |
+|409    |Comparison/Shift | GEU  |4b1011| 4b1001| 4b0001  | 4b0001  | 1b0  | Yes   |
+|410    |Comparison/Shift | SLT  |4b1110| 4b0101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|411    |Arithmetic       | DIV  |4b1110| 4b1100| 4b0001  | 4b0001  | 1b0  | Yes   |
+|412    |Comparison/Shift | SLTU |4b0011| 4b1011| 4b0001  | 4b0001  | 1b0  | Yes   |
+|413    |Arithmetic       | SUB  |4b0100| 4b1111| 4b0101  | 4b0101  | 1b1  | Yes   |
+|414    |Comparison/Shift | GEU  |4b0111| 4b1100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|415    |Logical          | OR   |4b1000| 4b1101| 4b1101  | 4b1101  | 1b1  | No    |
+|416    |Arithmetic       | DIV  |4b1000| 4b0001| 4b1000  | 4b1000  | 1b0  | Yes   |
+|417    |Logical          | OR   |4b1010| 4b0110| 4b1110  | 4b1110  | 1b0  | Yes   |
+|418    |Arithmetic       | ADD  |4b1100| 4b1000| 4b0100  | 4b0100  | 1b1  | Yes   |
+|419    |Comparison/Shift | EQ   |4b0100| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|420    |Comparison/Shift | SRA  |4b0010| 4b1110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|421    |Arithmetic       | MOD  |4b1101| 4b1011| 4b0010  | 4b0010  | 1b0  | Yes   |
+|422    |Comparison/Shift | LEU  |4b0111| 4b1001| 4b0001  | 4b0001  | 1b0  | Yes   |
+|423    |Logical          | NOR  |4b0110| 4b1010| 4b0001  | 4b0001  | 1b0  | Yes   |
+|424    |Comparison/Shift | SRL  |4b1011| 4b1110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|425    |Logical          | AND  |4b0100| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|426    |Arithmetic       | ADD  |4b0001| 4b0011| 4b0100  | 4b0100  | 1b0  | Yes   |
+|427    |Comparison/Shift | LT   |4b1010| 4b1111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|428    |Logical          | NOT_A|4b1101| 4b1100| 4b0010  | 4b0010  | 1b0  | Yes   |
+|429    |Logical          | NOR  |4b0111| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|430    |Comparison/Shift | GEU  |4b0110| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|431    |Arithmetic       | MOD  |4b0111| 4b0101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|432    |Arithmetic       | SUB  |4b0011| 4b1011| 4b1000  | 4b1000  | 1b1  | Yes   |
+|433    |Logical          | NAND |4b0100| 4b0110| 4b1011  | 4b1011  | 1b0  | Yes   |
+|434    |Arithmetic       | SUB  |4b1010| 4b0011| 4b0111  | 4b0111  | 1b0  | Yes   |
+|435    |Logical          | AND  |4b0011| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|436    |Logical          | NOT_B|4b0100| 4b0010| 4b1101  | 4b1101  | 1b0  | Yes   |
+|437    |Arithmetic       | DIV  |4b0000| 4b1011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|438    |Arithmetic       | MOD  |4b1000| 4b1000| 4b0000  | 4b0000  | 1b0  | Yes   |
+|439    |Logical          | OR   |4b1101| 4b1101| 4b1101  | 4b1101  | 1b0  | Yes   |
+|440    |Arithmetic       | DIV  |4b1001| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|441    |Logical          | NOT_A|4b0001| 4b0001| 4b1110  | 4b1110  | 1b0  | Yes   |
+|442    |Logical          | AND  |4b0101| 4b1110| 4b0100  | 4b0100  | 1b1  | No    |
+|443    |Comparison/Shift | SLL  |4b0110| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|444    |Logical          | OR   |4b0001| 4b0100| 4b0101  | 4b0101  | 1b1  | No    |
+|445    |Arithmetic       | ADD  |4b1111| 4b0001| 4b0000  | 4b0000  | 1b1  | Yes   |
+|446    |Arithmetic       | SUB  |4b1001| 4b1011| 4b1110  | 4b1110  | 1b1  | Yes   |
+|447    |Comparison/Shift | SRL  |4b1000| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|448    |Logical          | NAND |4b0100| 4b0000| 4b1111  | 4b1111  | 1b0  | Yes   |
+|449    |Comparison/Shift | SRL  |4b0010| 4b0010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|450    |Logical          | NOR  |4b0000| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|451    |Logical          | AND  |4b1110| 4b0111| 4b0110  | 4b0110  | 1b1  | No    |
+|452    |Arithmetic       | ADD  |4b1011| 4b0111| 4b0010  | 4b0010  | 1b1  | Yes   |
+|453    |Arithmetic       | ADD  |4b1000| 4b1001| 4b0001  | 4b0001  | 1b1  | Yes   |
+|454    |Arithmetic       | ADD  |4b0100| 4b1001| 4b1101  | 4b1101  | 1b0  | Yes   |
+|455    |Arithmetic       | DIV  |4b0011| 4b1111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|456    |Comparison/Shift | SRL  |4b1111| 4b1101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|457    |Comparison/Shift | SLTU |4b1111| 4b1110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|458    |Logical          | NOT_B|4b1101| 4b0111| 4b1000  | 4b1000  | 1b0  | Yes   |
+|459    |Logical          | XOR  |4b1111| 4b0110| 4b1001  | 4b1001  | 1b0  | Yes   |
+|460    |Arithmetic       | DIV  |4b1101| 4b1101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|461    |Arithmetic       | DIV  |4b0111| 4b0111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|462    |Logical          | NOT_B|4b0000| 4b1101| 4b0010  | 4b0010  | 1b0  | Yes   |
+|463    |Logical          | NOT_B|4b1100| 4b0111| 4b1000  | 4b1000  | 1b0  | Yes   |
+|464    |Arithmetic       | DIV  |4b0100| 4b1001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|465    |Comparison/Shift | SLT  |4b0111| 4b0110| 4b0000  | 4b0000  | 1b0  | Yes   |
+|466    |Logical          | NOT_B|4b1101| 4b1001| 4b0110  | 4b0110  | 1b0  | Yes   |
+|467    |Arithmetic       | MULT |4b1111| 4b1101| 4b0011  | 4b0011  | 1b0  | Yes   |
+|468    |Logical          | OR   |4b1010| 4b1100| 4b1110  | 4b1110  | 1b1  | No    |
+|469    |Logical          | NOT_A|4b0011| 4b0111| 4b1100  | 4b1100  | 1b0  | Yes   |
+|470    |Comparison/Shift | SRL  |4b0100| 4b0101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|471    |Logical          | OR   |4b1100| 4b0011| 4b1111  | 4b1111  | 1b0  | Yes   |
+|472    |Arithmetic       | SUB  |4b1101| 4b1010| 4b0011  | 4b0011  | 1b0  | Yes   |
+|473    |Arithmetic       | SUB  |4b0000| 4b1000| 4b1000  | 4b1000  | 1b1  | Yes   |
+|474    |Logical          | AND  |4b0001| 4b1010| 4b0000  | 4b0000  | 1b0  | Yes   |
+|475    |Logical          | XOR  |4b0111| 4b0001| 4b0110  | 4b0110  | 1b0  | Yes   |
+|476    |Logical          | AND  |4b1101| 4b1101| 4b1101  | 4b1101  | 1b1  | No    |
+|477    |Logical          | OR   |4b0100| 4b0000| 4b0100  | 4b0100  | 1b0  | Yes   |
+|478    |Comparison/Shift | SLT  |4b0110| 4b1011| 4b0000  | 4b0000  | 1b0  | Yes   |
+|479    |Comparison/Shift | SRL  |4b1111| 4b0111| 4b0000  | 4b0000  | 1b0  | Yes   |
+|480    |Logical          | XOR  |4b0001| 4b1000| 4b1001  | 4b1001  | 1b0  | Yes   |
+|481    |Arithmetic       | ADD  |4b0001| 4b1010| 4b1011  | 4b1011  | 1b0  | Yes   |
+|482    |Arithmetic       | MULT |4b0100| 4b1010| 4b1000  | 4b1000  | 1b0  | Yes   |
+|483    |Arithmetic       | MOD  |4b1100| 4b1111| 4b1100  | 4b1100  | 1b0  | Yes   |
+|484    |Arithmetic       | MOD  |4b1101| 4b0001| 4b0000  | 4b0000  | 1b0  | Yes   |
+|485    |Logical          | AND  |4b0010| 4b1110| 4b0010  | 4b0010  | 1b1  | No    |
+|486    |Comparison/Shift | SLTU |4b1001| 4b0100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|487    |Logical          | NAND |4b1011| 4b1110| 4b0101  | 4b0101  | 1b0  | Yes   |
+|488    |Comparison/Shift | SRA  |4b0110| 4b0101| 4b0000  | 4b0000  | 1b0  | Yes   |
+|489    |Comparison/Shift | GEU  |4b1111| 4b1111| 4b0001  | 4b0001  | 1b0  | Yes   |
+|490    |Arithmetic       | ADD  |4b1001| 4b1101| 4b0110  | 4b0110  | 1b1  | Yes   |
+|491    |Arithmetic       | MOD  |4b1100| 4b1101| 4b1100  | 4b1100  | 1b0  | Yes   |
+|492    |Arithmetic       | MULT |4b1111| 4b1001| 4b0111  | 4b0111  | 1b0  | Yes   |
+|493    |Arithmetic       | DIV  |4b0111| 4b0101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|494    |Arithmetic       | MOD  |4b1010| 4b0011| 4b0001  | 4b0001  | 1b0  | Yes   |
+|495    |Logical          | AND  |4b0001| 4b1101| 4b0001  | 4b0001  | 1b0  | Yes   |
+|496    |Comparison/Shift | GEU  |4b0010| 4b0001| 4b0001  | 4b0001  | 1b0  | Yes   |
+|497    |Logical          | XOR  |4b0000| 4b1001| 4b1001  | 4b1001  | 1b0  | Yes   |
+|498    |Comparison/Shift | SLL  |4b0110| 4b0100| 4b0000  | 4b0000  | 1b0  | Yes   |
+|499    |Arithmetic       | MOD  |4b0010| 4b1110| 4b0010  | 4b0010  | 1b0  | Yes   |
++-------+-----------------+------+------+------+---------+---------+------+-------+
+Match Percentage: 88.98% (444 out of 499 tests passed)
+
+Dieu kien xet Cout thieu, nen bo sung, de gay conflict neu gap nhung param trung voi ADD va SUB
+MULT nhan bi tran so, Output chi toi da 4bit
+Comp va Shift bij conflict trong viec quy dinh size output. Trong spec ghi 4bit nhung lenh set lai out ra 1 bit

@@ -1,0 +1,7 @@
+m
+a
+n
+c
+q
+f
+Number of same elements: 6

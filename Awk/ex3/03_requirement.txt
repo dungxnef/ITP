@@ -1,0 +1,14 @@
+# Count the occurences of elements and print them on the screen
+Ex: ./03_ex3.csh 03_input
+
+Input:
+a
+b
+a
+c
+c
+a
+Output:
+a 3
+b 1
+c 2
